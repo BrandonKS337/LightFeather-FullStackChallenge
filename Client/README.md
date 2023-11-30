@@ -1,4 +1,7 @@
 # React + Vite
+#### Will need to run `npm i` to install dependencies.
+
+Initial launch script once navigated into `Client` directory is to run `npm run dev` for a developer environment. May alternatively run `npm run build` to launch normally.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
