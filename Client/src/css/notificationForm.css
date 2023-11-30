@@ -1,0 +1,132 @@
+:root {
+  --form-background: linear-gradient(to top right, #5fa2fa, #91bffb,#dbd9db,#dbd9db,#dbd9db, rgb(248, 221, 221));
+  --primary-color: #5c6bc0;
+  --text-dark: #333;
+  --text-light: #666;
+  --background-color: white;
+  --button-hover-color: #057320;
+  --button-color: #1fb143;
+  --button-text-color: white;
+  --input-border: white;
+  --box-shadow: 5px 5px 20px rgba(0, 0, 0, 2);
+  --text-color: black;
+  --input-background: white;
+  --label-color: #5a5a5a;
+  --placeholder-text: lightgrey;
+}
+
+body {
+  background: white;
+}
+
+.notification-form-container {
+  font-family: Arial, sans-serif;
+  max-width: 500px; /*adjust*/
+  /* border: 2px solid red; */
+  margin: 2rem auto;
+  padding: 20px;
+  border-radius: 20px;
+  background: var(--form-background);
+  color: var(--text-color);
+  box-shadow: var(--box-shadow);
+}
+
+.notification-form-container h2 {
+  text-align: center;
+  margin: 0 0 0 0;
+  transform: translateY(-2.4rem) translateX(-6rem);
+  color: var(--text-dark);
+}
+
+.notification-form-container p {
+  text-align: center;
+  font-size: 0.9rem;
+  margin: 0 0 30px 0;
+}
+
+.notification-form-container .inputFields {
+  /* border: 2px solid red; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.notification-form-container form {
+  position: relative;
+}
+
+.notification-form-container label {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  color: var(--text-dark);
+  font-size: 1rem;
+}
+
+.notification-form-container input[type="text"] {
+  margin: 0 0 10px 0;
+}
+
+.notification-form-container input[type="text"],
+.notification-form-container input[type="email"],
+.notification-form-container input[type="tel"],
+.notification-form-container select {
+  width: 240px;
+  padding: 10px;
+  /* margin: 0 0 10px 0; */
+  border: 1px solid var(--input-border);
+  background-color: var(--background-color);
+  border-radius: 5px;
+  box-sizing: border-box;
+  color: var(--text-dark);
+  font-weight: bold;
+  text-align: center;
+  /* color: red; */
+}
+
+.notification-form-container input[type="radio"] {
+  margin: 0 5px 10px 0;
+}
+
+.notification-form-container input::placeholder {
+    /* color: red; */
+      color: var(--label-color);
+    opacity: 0.4;
+    text-align: center;
+  }
+
+.notification-form-container button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--button-color);
+  color: var(--button-text-color);
+  font-size: 1rem;
+  box-shadow: var(--box-shadow);
+  margin: 20px 0 0 0;
+}
+
+.notification-form-container button:hover {
+  background-color: var(--button-hover-color);
+}
+
+.notification-form-container .prefContainer {
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+}
+.notification-form-container .togglePrefButton {
+    color: var(--text-dark);
+/* border: 2px solid red; */
+display: flex;
+justify-content: flex-start;
+padding: 0 0 0 0;
+}
+
+.notification-form-container select[name="supervisorId"] {
+    margin: 15px 0 0 0;
+    /* color: red */
+}
+
+
