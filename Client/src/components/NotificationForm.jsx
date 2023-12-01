@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const NotificationForm = () => {
   const [formData, setFormData] = useState({
@@ -6,9 +6,23 @@ const NotificationForm = () => {
     lastName: "",
     email: "",
     phone: "",
-    supervisorId: "",
+    supervisorsId: "",
     preferredContact: null,
   });
+
+  const [supervisors, setSupervisors] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/supervisors")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Ooops something went wrong, please try again.");
+        }
+        return response.json();
+      })
+      .then((data) => setSupervisors(data))
+      .catch((error) => console.error("Error fetching supervisors:", error));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,19 +35,39 @@ const NotificationForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    //checking for phone=10 digits
+    //checking for phone=10 digits //side note this is redundant. Keeping for now but I have this format check also built into the controller on server side
     const phoneRegex = /^\d{10}$/;
-
     if (formData.phone && !phoneRegex.test(formData.phone)) {
       alert("Please enter a valid 10 digit phone number");
       return;
     }
 
-    //Submit logic here
-    console.log(formData);
+    
+    console.log("Form Data before submission:", formData);
 
-    //clear form or display success msg
+
+    fetch("http://localhost:3000/api/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/JSON",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          console.log(data.message);
+        }
+      })
+      .catch((error) => {
+        console.log("Error submitting data: ", error);
+      });
   };
+
+  //Submit logic here
+  // console.log(formData);
+
+  //clear form or display success msg
 
   return (
     <div className="notification-form-container">
@@ -112,17 +146,21 @@ const NotificationForm = () => {
           </div>
         </div>
 
-        <label htmlFor="supervisor">{/* Supervisor */}</label>
+        <label htmlFor="supervisors">{/* Supervisor */}</label>
         <select
-          name="supervisorId"
-          value={formData.supervisorId}
+          name="supervisorsId"
+          value={formData.supervisorsId}
           onChange={handleChange}
         >
           <option value="" disabled>
             {" "}
             Select a Supervisor
           </option>
-          {/* need to build in API `GET` data here to populate supervisors */}
+          {supervisors.map((supervisors, index) => (
+            <option key={index} value={supervisors}>
+              {supervisors}
+            </option>
+          ))}
         </select>
 
         <button type="submit">Submit</button>

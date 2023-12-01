@@ -24,6 +24,8 @@ export const getSupervisors = async (req, res) => {
     });
 };
 
+
+
 //function to POST user data.
 export const submitNotification = async (req, res) => {
   const { firstName, lastName, email, phoneNumber, supervisorsId } = req.body;
