@@ -1,19 +1,33 @@
 import fetch from "node-fetch";
 
 export const getSupervisors = async (req, res) => {
+  console.log('useEffect triggered')
   fetch("https://o3m5qixdng.execute-api.us-east-1.amazonaws.com/api/managers") //GET all managers endpoint
     .then((res) => {
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`); //Error handling for bad responses from fetch call
       } else {
-        return res.json(); //if good return response as JSON
+        return res.json();
       }
     })
     .then((data) => {
-      const supervisors = data //takes response data and sets to new var
-        .filter((sup) => isNaN(sup.jurisdiction)) //filters out numerical jurisdictions
-        .map((sup) => `${sup.jurisdiction} - ${sup.lastName}, ${sup.firstName}`) //maps data extrapolating specific key:values
-        .sort(); //sorts alphabetically
+      let supervisors = data
+        .filter((sup) => isNaN(sup.jurisdiction)) // Filters out numerical jurisdictions
+        .sort((a, b) => {
+          // Compare by jurisdiction
+          let comparison = a.jurisdiction.localeCompare(b.jurisdiction);
+          if (comparison !== 0) return comparison;
+
+          // Compare by last name
+          comparison = a.lastName.localeCompare(b.lastName);
+          if (comparison !== 0) return comparison;
+
+          // Compare by first name
+          return a.firstName.localeCompare(b.firstName);
+        })
+        .map(
+          (sup) => `${sup.jurisdiction} - ${sup.lastName}, ${sup.firstName}` //formatting for UI render
+        );
 
       res.json(supervisors);
       console.log("Transfer Successful!");
@@ -23,8 +37,6 @@ export const getSupervisors = async (req, res) => {
       res.status(500).json({ message: "Error fetching supervisors", error });
     });
 };
-
-
 
 //function to POST user data.
 export const submitNotification = async (req, res) => {
@@ -72,4 +84,5 @@ export const submitNotification = async (req, res) => {
   });
 
   res.json({ message: "Submission received successfully" });
+  // return res.json({ message: "Submission received successfully" })
 };
