@@ -5,11 +5,14 @@ const NotificationForm = () => {
     firstName: "",
     lastName: "",
     email: "",
-    phone: "",
+    phoneNumber: "",
     supervisorsId: "",
     preferredContact: null,
   });
 
+
+
+  // const GetSupervisors = () => {
   const [supervisors, setSupervisors] = useState([]);
 
   useEffect(() => {
@@ -18,6 +21,8 @@ const NotificationForm = () => {
         if (!response.ok) {
           throw new Error("Ooops something went wrong, please try again.");
         }
+        console.log(response);
+
         return response.json();
       })
       .then((data) => setSupervisors(data))
@@ -35,16 +40,14 @@ const NotificationForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    //checking for phone=10 digits //side note this is redundant. Keeping for now but I have this format check also built into the controller on server side
-    const phoneRegex = /^\d{10}$/;
-    if (formData.phone && !phoneRegex.test(formData.phone)) {
+    //checking for phoneNumber=10 digits //side note this is redundant. Keeping for now but I have this format check also built into the controller on server side
+    const phoneNumberRegex = /^\d{10}$/;
+    if (formData.phoneNumber && !phoneNumberRegex.test(formData.phoneNumber)) {
       alert("Please enter a valid 10 digit phone number");
       return;
     }
 
-    
     console.log("Form Data before submission:", formData);
-
 
     fetch("http://localhost:3000/api/submit", {
       method: "POST",
@@ -81,7 +84,7 @@ const NotificationForm = () => {
 
         <div className="inputFields">
           <span className="nameContainer">
-            <label htmlFor="firstName">First Name</label>
+            <label>First Name</label>
             <input
               type="text"
               id="firstName"
@@ -92,7 +95,7 @@ const NotificationForm = () => {
             />
           </span>
           <span className="nameContainer">
-            <label htmlFor="lastName">Last Name</label>
+            <label>Last Name</label>
             <input
               type="text"
               id="lastName"
@@ -125,11 +128,11 @@ const NotificationForm = () => {
           </div>
 
           <div className="prefContainer">
-            <label>Phone</label>
+            <label>Phone Number</label>
             <input
               type="tel"
-              name="phone"
-              value={formData.phone}
+              name="phoneNumber"
+              value={formData.phoneNumber}
               onChange={handleChange}
               placeholder="777-777-7777"
             />
@@ -137,8 +140,8 @@ const NotificationForm = () => {
               <input
                 type="checkbox"
                 name="preferredContact"
-                value="phone"
-                checked={formData.preferredContact === "phone"}
+                value="phoneNumber"
+                checked={formData.preferredContact === "phoneNumber"}
                 onChange={handleChange}
               />
               Preferred
