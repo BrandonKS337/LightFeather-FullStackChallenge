@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 
 export const getSupervisors = async (req, res) => {
-  console.log('useEffect triggered')
+  console.log("useEffect triggered");
   fetch("https://o3m5qixdng.execute-api.us-east-1.amazonaws.com/api/managers") //GET all managers endpoint
     .then((res) => {
       if (!res.ok) {
@@ -11,19 +11,15 @@ export const getSupervisors = async (req, res) => {
       }
     })
     .then((data) => {
+      // console.log(data)
       let supervisors = data
         .filter((sup) => isNaN(sup.jurisdiction)) // Filters out numerical jurisdictions
         .sort((a, b) => {
-          // Compare by jurisdiction
-          let comparison = a.jurisdiction.localeCompare(b.jurisdiction);
-          if (comparison !== 0) return comparison;
+          const jurisdiction = a.jurisdiction.localeCompare(b.jurisdiction);
+          const firstName = a.firstName.localeCompare(b.firstName);
+          const lastName = a.lastName.localeCompare(b.lastName);
 
-          // Compare by last name
-          comparison = a.lastName.localeCompare(b.lastName);
-          if (comparison !== 0) return comparison;
-
-          // Compare by first name
-          return a.firstName.localeCompare(b.firstName);
+          return jurisdiction || lastName || firstName;
         })
         .map(
           (sup) => `${sup.jurisdiction} - ${sup.lastName}, ${sup.firstName}` //formatting for UI render
@@ -44,8 +40,7 @@ export const submitNotification = async (req, res) => {
 
   const nameRegex = /^[A-Za-z]+$/; //Expression to check if value is a letter(regardless of case)
   const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/; //validates email format
-  const phoneRegex =
-    /^\+?(\d{1,3})?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?$/; //validates phone format
+  const phoneRegex = /^\d{3}-?\d{3}-?\d{4}$/; //validates phone format
 
   if (!firstName || !nameRegex.test(firstName)) {
     return res.status(400).json({
@@ -72,7 +67,7 @@ export const submitNotification = async (req, res) => {
   if (phoneNumber && !phoneRegex.test(phoneNumber)) {
     return res
       .status(400)
-      .json({ message: "Please enter a valid phone number and resubmit." });
+      .json({ message: "Please enter a valid phone number and resubmit.Do NOT include a hyphen between numbers." });
   }
 
   console.log("Submission:", {
