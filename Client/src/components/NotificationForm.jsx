@@ -39,9 +39,9 @@ const NotificationForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     console.log("Form Data before submission:", formData);
-
+  
     fetch("http://localhost:3000/api/submit", {
       method: "POST",
       headers: {
@@ -50,7 +50,7 @@ const NotificationForm = () => {
       body: JSON.stringify(formData),
     })
       .then((response) => {
-        if (!response.ok && response.status === 400) {
+        if (!response.ok) {
           return response.json().then((data) => {
             throw new Error(data.message || "An error occurred");
           });
@@ -58,17 +58,23 @@ const NotificationForm = () => {
         return response.json();
       })
       .then((data) => {
-        if (data.message) {
-          console.log(data.message);
-          setErrorMessage("");
-        }
+        // Use the message from the response here
+        setErrorMessage(data.message); // This will display the success message
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phoneNumber: "",
+          supervisorsId: "",
+          preferredContact: null,
+        });
       })
       .catch((error) => {
         console.log("Error submitting data: ", error);
         setErrorMessage(error.message);
       });
-
-      // Future insert: insert logic here to either close overlay/modal/popOut and return user to previous view
+  
+    // Future insert: insert logic here to either close overlay/modal/popOut and return user to previous view
   };
 
   const handlePhoneInputChange = (e) => {
@@ -76,7 +82,8 @@ const NotificationForm = () => {
     input = input.substring(0, 10); // Limit the input to 10 digits
 
     if (input.length <= 3) {
-      input = input; // If input length is 3 or less, just return the input
+      // If input length is 3 or less, just return the input
+      input = input;
     } else if (input.length <= 6) {
       // If input length is between 4 and 6, add the first hyphen
       input = input.substring(0, 3) + "-" + input.substring(3);
@@ -92,6 +99,13 @@ const NotificationForm = () => {
 
     setFormData({ ...formData, phoneNumber: input });
   };
+  const getMessageStyle = () => {
+    if (errorMessage === "Submission received successfully!") {
+      return { fontSize: "1.5rem", color: "green" };
+    } else {
+      return { /* default error style */ };
+    }
+  };
 
   return (
     <div className="notification-form-container">
@@ -102,9 +116,7 @@ const NotificationForm = () => {
           method. The supervisor you select will be updated with your updated
           contact information upon submission of this form!
         </p>
-        <div id="error-message">
-          {errorMessage}
-        </div>
+        <div id="error-message" style={getMessageStyle()}>{errorMessage}</div>
         <div className="inputFields">
           <span className="nameContainer">
             <label>First Name</label>
