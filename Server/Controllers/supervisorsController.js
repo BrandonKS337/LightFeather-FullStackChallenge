@@ -15,9 +15,9 @@ export const getSupervisors = async (req, res) => {
       let supervisors = data
         .filter((sup) => isNaN(sup.jurisdiction)) // Filters out numerical jurisdictions
         .sort((a, b) => {
-          const jurisdiction = a.jurisdiction.localeCompare(b.jurisdiction);
-          const firstName = a.firstName.localeCompare(b.firstName);
-          const lastName = a.lastName.localeCompare(b.lastName);
+          let jurisdiction = a.jurisdiction.localeCompare(b.jurisdiction);
+          let firstName = a.firstName.localeCompare(b.firstName);
+          let lastName = a.lastName.localeCompare(b.lastName);
 
           return jurisdiction || lastName || firstName;
         })
@@ -28,15 +28,15 @@ export const getSupervisors = async (req, res) => {
       res.json(supervisors);
       console.log("Transfer Successful!");
     })
-    .catch((error) => {
-      console.error("Error fetching supervisors:", error);
-      res.status(500).json({ message: "Error fetching supervisors", error });
-    });
+    // .catch((error) => {
+    //   console.error("Error fetching supervisors:", error);
+    //   res.status(500).json({ message: "Error fetching supervisors", error });
+    // });
 };
 
 //function to POST user data.
 export const submitNotification = async (req, res) => {
-  const { firstName, lastName, email, phoneNumber, supervisorsId } = req.body;
+  const { firstName, lastName, email, phoneNumber, supervisorsId, preferredContact } = req.body;
 
   const nameRegex = /^[A-Za-z]+$/; //Expression to check if value is a letter(regardless of case)
   const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/; //validates email format
@@ -77,6 +77,7 @@ export const submitNotification = async (req, res) => {
     email,
     phoneNumber,
     supervisorsId,
+    preferredContact
   });
 
   res.json({ message: "Submission received successfully" });
