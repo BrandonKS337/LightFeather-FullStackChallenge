@@ -3,10 +3,11 @@
     to top right,
     #5fa2fa,
     #91bffb,
+    #c2d9f7,
+    /* #dbd9db, */
     #dbd9db,
-    #dbd9db,
-    #dbd9db,
-    rgb(248, 221, 221)
+    #dbd9db
+    /* rgb(248, 221, 221) */
   );
   --primary-color: #5c6bc0;
   --text-dark: #333;

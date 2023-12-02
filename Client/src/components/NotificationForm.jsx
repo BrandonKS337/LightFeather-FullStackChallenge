@@ -10,8 +10,8 @@ const NotificationForm = () => {
     preferredContact: null,
   });
 
-  // const GetSupervisors = () => {
   const [supervisors, setSupervisors] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("")
 
   useEffect(() => {
     console.log("useEffect Triggered");
@@ -34,6 +34,7 @@ const NotificationForm = () => {
       ...prev,
       [name]: value,
     }));
+    setErrorMessage("")
   };
 
   const handleSubmit = (e) => {
@@ -59,23 +60,27 @@ const NotificationForm = () => {
       });
   };
 
-
   const handlePhoneInputChange = (e) => {
-    let input = e.target.value.replace(/\D/g, ''); // Remove non-digits
-    // Limit the input to 10 digits
-    input = input.substring(0, 10);
-  
+    let input = e.target.value.replace(/\D/g, ""); // Remove non-digits
+    input = input.substring(0, 10); // Limit the input to 10 digits
+
     if (input.length <= 3) {
-      // If input length is 3 or less, just return the input
-      input = input;
-    } else if (input.length <= 6) {
-      // If input length is between 4 and 6, add the first hyphen
-      input = input.substring(0, 3) + '-' + input.substring(3);
-    } else {
-      // If input length is more than 6, add both hyphens
-      input = input.substring(0, 3) + '-' + input.substring(3, 6) + '-' + input.substring(6);
+      input = input; // If input length is 3 or less, just return the input
+
+    } 
+    else if (input.length <= 6) { // If input length is between 4 and 6, add the first hyphen
+      input = input.substring(0, 3) + "-" + input.substring(3);
+
+    } 
+    else {// If input length is more than 6, add both hyphens    
+      input =
+        input.substring(0, 3) +
+        "-" +
+        input.substring(3, 6) +
+        "-" +
+        input.substring(6);
     }
-  
+
     setFormData({ ...formData, phoneNumber: input });
   };
 

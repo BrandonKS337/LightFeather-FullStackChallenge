@@ -65,9 +65,10 @@ export const submitNotification = async (req, res) => {
       .json({ message: "Please add a valid email address and resubmit." });
   }
   if (phoneNumber && !phoneRegex.test(phoneNumber)) {
-    return res
-      .status(400)
-      .json({ message: "Please enter a valid phone number and resubmit.Do NOT include a hyphen between numbers." });
+    return res.status(400).json({
+      message:
+        "Please enter a valid phone number and resubmit.Do NOT include a hyphen between numbers.",
+    });
   }
 
   console.log("Submission:", {
