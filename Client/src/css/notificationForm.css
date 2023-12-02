@@ -13,7 +13,7 @@
   --text-dark: #333;
   --text-light: #666;
   --background-color: white;
-  --button-hover-color: #057320;
+  --button-hover-color: #059228;
   --button-color: #1fb143;
   --button-text-color: white;
   --input-border: white;
@@ -41,16 +41,27 @@ body {
 }
 
 .notification-form-container h2 {
+  font-size: 2.5rem;
   text-align: center;
-  margin: 0 0 0 0;
-  transform: translateY(-2.4rem) translateX(-6rem);
+  padding: 0 0 -2rem 0;
+  margin: 0 0 -1rem 0;
+  transform: translateY(-3.2rem);
   color: var(--text-dark);
 }
 
 .notification-form-container p {
   text-align: center;
-  font-size: 0.9rem;
-  margin: 0 0 30px 0;
+  font-size: 1rem;
+  margin: 0 0 10px 0;
+  
+}
+#error-message {
+  /* border: 2px solid red; */
+  min-height: 2.5rem;
+  min-width: 100%;
+  color: red;
+  font-size: small;
+  margin-bottom: 10px;
 }
 
 .notification-form-container .inputFields {
@@ -137,3 +148,4 @@ body {
   margin: 15px 0 0 0;
   /* color: red */
 }
+

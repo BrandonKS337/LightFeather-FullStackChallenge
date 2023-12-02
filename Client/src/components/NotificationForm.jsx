@@ -11,7 +11,7 @@ const NotificationForm = () => {
   });
 
   const [supervisors, setSupervisors] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     console.log("useEffect Triggered");
@@ -34,7 +34,7 @@ const NotificationForm = () => {
       ...prev,
       [name]: value,
     }));
-    setErrorMessage("")
+    setErrorMessage("");
   };
 
   const handleSubmit = (e) => {
@@ -49,15 +49,26 @@ const NotificationForm = () => {
       },
       body: JSON.stringify(formData),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok && response.status === 400) {
+          return response.json().then((data) => {
+            throw new Error(data.message || "An error occurred");
+          });
+        }
+        return response.json();
+      })
       .then((data) => {
         if (data.message) {
           console.log(data.message);
+          setErrorMessage("");
         }
       })
       .catch((error) => {
         console.log("Error submitting data: ", error);
+        setErrorMessage(error.message);
       });
+
+      // Future insert: insert logic here to either close overlay/modal/popOut and return user to previous view
   };
 
   const handlePhoneInputChange = (e) => {
@@ -66,13 +77,11 @@ const NotificationForm = () => {
 
     if (input.length <= 3) {
       input = input; // If input length is 3 or less, just return the input
-
-    } 
-    else if (input.length <= 6) { // If input length is between 4 and 6, add the first hyphen
+    } else if (input.length <= 6) {
+      // If input length is between 4 and 6, add the first hyphen
       input = input.substring(0, 3) + "-" + input.substring(3);
-
-    } 
-    else {// If input length is more than 6, add both hyphens    
+    } else {
+      // If input length is more than 6, add both hyphens
       input =
         input.substring(0, 3) +
         "-" +
@@ -93,7 +102,9 @@ const NotificationForm = () => {
           method. The supervisor you select will be updated with your updated
           contact information upon submission of this form!
         </p>
-
+        <div id="error-message">
+          {errorMessage}
+        </div>
         <div className="inputFields">
           <span className="nameContainer">
             <label>First Name</label>
@@ -162,7 +173,6 @@ const NotificationForm = () => {
             </label>
           </div>
         </div>
-
         <label htmlFor="supervisors">{/* Supervisor */}</label>
         <select
           name="supervisorsId"
@@ -179,7 +189,6 @@ const NotificationForm = () => {
             </option>
           ))}
         </select>
-
         <button type="submit">Submit</button>
       </form>
     </div>
