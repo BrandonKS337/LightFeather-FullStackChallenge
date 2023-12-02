@@ -34,6 +34,7 @@ export const getSupervisors = async (req, res) => {
     // });
 };
 
+
 //function to POST user data.
 export const submitNotification = async (req, res) => {
   const { firstName, lastName, email, phoneNumber, supervisorsId, preferredContact } = req.body;
@@ -80,6 +81,6 @@ export const submitNotification = async (req, res) => {
     preferredContact
   });
 
-  res.json({ message: "Submission received successfully" });
+  res.json({ message: "Submission received successfully!" });
   // return res.json({ message: "Submission received successfully" })
 };
