@@ -10,11 +10,11 @@ const NotificationForm = () => {
     preferredContact: null,
   });
 
-  // const GetSupervisors = () => {
   const [supervisors, setSupervisors] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("")
 
   useEffect(() => {
-    console.log("useEffect Triggered")
+    console.log("useEffect Triggered");
     fetch("http://localhost:3000/api/supervisors")
       .then((response) => {
         if (!response.ok) {
@@ -34,17 +34,11 @@ const NotificationForm = () => {
       ...prev,
       [name]: value,
     }));
+    setErrorMessage("")
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    //checking for phoneNumber=10 digits //side note this is redundant. Keeping for now but I have this format check also built into the controller on server side
-    const phoneNumberRegex = /^\d{10}$/;
-    if (formData.phoneNumber && !phoneNumberRegex.test(formData.phoneNumber)) {
-      alert("Please enter a valid 10 digit phone number");
-      return;
-    }
 
     console.log("Form Data before submission:", formData);
 
@@ -66,10 +60,29 @@ const NotificationForm = () => {
       });
   };
 
-  //Submit logic here
-  // console.log(formData);
+  const handlePhoneInputChange = (e) => {
+    let input = e.target.value.replace(/\D/g, ""); // Remove non-digits
+    input = input.substring(0, 10); // Limit the input to 10 digits
 
-  //clear form or display success msg
+    if (input.length <= 3) {
+      input = input; // If input length is 3 or less, just return the input
+
+    } 
+    else if (input.length <= 6) { // If input length is between 4 and 6, add the first hyphen
+      input = input.substring(0, 3) + "-" + input.substring(3);
+
+    } 
+    else {// If input length is more than 6, add both hyphens    
+      input =
+        input.substring(0, 3) +
+        "-" +
+        input.substring(3, 6) +
+        "-" +
+        input.substring(6);
+    }
+
+    setFormData({ ...formData, phoneNumber: input });
+  };
 
   return (
     <div className="notification-form-container">
@@ -130,10 +143,12 @@ const NotificationForm = () => {
             <label>Phone Number</label>
             <input
               type="tel"
+              pattern="^\d{3}-\d{3}-\d{4}$"
+              title="Phone number should be in the format: 123-456-7890"
               name="phoneNumber"
               value={formData.phoneNumber}
-              onChange={handleChange}
-              placeholder="777-777-7777"
+              onChange={handlePhoneInputChange}
+              placeholder="123-456-7890"
             />
             <label className="togglePrefButton">
               <input
