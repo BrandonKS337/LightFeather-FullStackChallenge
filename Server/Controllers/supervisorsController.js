@@ -1,6 +1,6 @@
-import fetch from "node-fetch";
+const fetch = require ("node-fetch");
 
-export const getSupervisors = async (req, res) => {
+const getSupervisors = async (req, res) => {
   console.log("useEffect triggered");
   fetch("https://o3m5qixdng.execute-api.us-east-1.amazonaws.com/api/managers") //GET all managers endpoint
     .then((res) => {
@@ -11,7 +11,6 @@ export const getSupervisors = async (req, res) => {
       }
     })
     .then((data) => {
-      // console.log(data)
       let supervisors = data
         .filter((sup) => isNaN(sup.jurisdiction)) // Filters out numerical jurisdictions
         .sort((a, b) => {
@@ -36,7 +35,7 @@ export const getSupervisors = async (req, res) => {
 
 
 //function to POST user data.
-export const submitNotification = async (req, res) => {
+const submitNotification = async (req, res) => {
   const { firstName, lastName, email, phoneNumber, supervisorsId, preferredContact } = req.body;
 
   const nameRegex = /^[A-Za-z]+$/; //Expression to check if value is a letter(regardless of case)
@@ -83,3 +82,9 @@ export const submitNotification = async (req, res) => {
 
   res.json({ message: "Submission received successfully!" });
 };
+
+
+module.exports = {
+  submitNotification,
+  getSupervisors
+}

@@ -39,9 +39,9 @@ const NotificationForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     console.log("Form Data before submission:", formData);
-  
+
     fetch("http://localhost:3000/api/submit", {
       method: "POST",
       headers: {
@@ -58,7 +58,7 @@ const NotificationForm = () => {
         return response.json();
       })
       .then((data) => {
-        setErrorMessage(data.message); 
+        setErrorMessage(data.message);
         setFormData({
           firstName: "",
           lastName: "",
@@ -72,7 +72,7 @@ const NotificationForm = () => {
         console.log("Error submitting data: ", error);
         setErrorMessage(error.message);
       });
-  
+
     // Future insert: insert logic here to either close overlay/modal/popOut and return user to previous view
   };
 
@@ -102,7 +102,7 @@ const NotificationForm = () => {
     if (errorMessage === "Submission received successfully!") {
       return { fontSize: "1.5rem", color: "green" };
     } else {
-      return ;
+      return;
     }
   };
 
@@ -115,7 +115,9 @@ const NotificationForm = () => {
           method. The supervisor you select will be updated with your updated
           contact information upon submission of this form!
         </p>
-        <div id="error-message" style={getMessageStyle()}>{errorMessage}</div>
+        <div id="error-message" style={getMessageStyle()}>
+          {errorMessage}
+        </div>
         <div className="inputFields">
           <span className="nameContainer">
             <label>First Name</label>
