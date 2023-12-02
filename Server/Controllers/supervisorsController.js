@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 
 export const getSupervisors = async (req, res) => {
+  console.log('useEffect triggered')
   fetch("https://o3m5qixdng.execute-api.us-east-1.amazonaws.com/api/managers") //GET all managers endpoint
     .then((res) => {
       if (!res.ok) {

@@ -10,12 +10,11 @@ const NotificationForm = () => {
     preferredContact: null,
   });
 
-
-
   // const GetSupervisors = () => {
   const [supervisors, setSupervisors] = useState([]);
 
   useEffect(() => {
+    console.log("useEffect Triggered")
     fetch("http://localhost:3000/api/supervisors")
       .then((response) => {
         if (!response.ok) {
