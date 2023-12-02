@@ -58,8 +58,7 @@ const NotificationForm = () => {
         return response.json();
       })
       .then((data) => {
-        // Use the message from the response here
-        setErrorMessage(data.message); // This will display the success message
+        setErrorMessage(data.message); 
         setFormData({
           firstName: "",
           lastName: "",
@@ -103,7 +102,7 @@ const NotificationForm = () => {
     if (errorMessage === "Submission received successfully!") {
       return { fontSize: "1.5rem", color: "green" };
     } else {
-      return { /* default error style */ };
+      return ;
     }
   };
 

@@ -28,10 +28,10 @@ export const getSupervisors = async (req, res) => {
       res.json(supervisors);
       console.log("Transfer Successful!");
     })
-    // .catch((error) => {
-    //   console.error("Error fetching supervisors:", error);
-    //   res.status(500).json({ message: "Error fetching supervisors", error });
-    // });
+    .catch((error) => {
+      console.error("Error fetching supervisors:", error);
+      res.status(500).json({ message: "Error fetching supervisors", error });
+    });
 };
 
 
@@ -82,5 +82,4 @@ export const submitNotification = async (req, res) => {
   });
 
   res.json({ message: "Submission received successfully!" });
-  // return res.json({ message: "Submission received successfully" })
 };
